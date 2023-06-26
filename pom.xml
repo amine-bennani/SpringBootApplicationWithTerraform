@@ -65,43 +65,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.10</version>
-				<executions>
-					<execution>
-						<id>tag-latest</id>
-						<goals>
-							<goal>build</goal>
-							<goal>tag</goal>
-							<goal>push</goal>
-						</goals>
-						<configuration>
-							<tag>latest</tag>
-						</configuration>
-					</execution>
-					<execution>
-						<id>tag-version</id>
-						<goals>
-							<goal>build</goal>
-							<goal>tag</goal>
-							<goal>push</goal>
-						</goals>
-						<configuration>
-							<tag>latest</tag>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-					<repository>registry.hub.docker.com/assiya24/springboot-mysql-docker</repository>
-					<tag>latest</tag>
-					<buildArgs>
-						<JAR_FILE>target/MyWebApp.jar</JAR_FILE>
-					</buildArgs>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.2</version>
