@@ -1,4 +1,4 @@
-package com.example.MyWebApp.users;
+package com.NTT.MyWebApp.users;
 
 
 import jakarta.persistence.*;

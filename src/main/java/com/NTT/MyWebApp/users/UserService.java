@@ -1,4 +1,4 @@
-package com.example.MyWebApp.users;
+package com.NTT.MyWebApp.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

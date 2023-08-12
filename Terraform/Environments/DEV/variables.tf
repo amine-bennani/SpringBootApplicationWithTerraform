@@ -12,3 +12,8 @@ variable "key_name" {
   description = "EC2 Key Pair name for bastion instance"
   type        = string
 }
+
+variable "availability_zone"  {
+  description = "The availability zone where the dev environment will be deployed"
+  value       =  ["us-east-1a"]
+}
