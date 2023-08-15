@@ -1,0 +1,67 @@
+---
+- name: Deploy Dockerized Spring Boot App
+  hosts: "{{ environment }}_host"
+  gather_facts: yes
+  become: yes
+  become_user: root
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Install necessary packages
+      apt:
+        name:
+          - docker.io
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Install necessary packages
+      yum:
+        name:
+          - docker
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+
+    - name: Determine Docker image name
+      id: determine_docker_image
+      run: |
+        if [[ "$GITHUB_REF" == "refs/heads/dev" ]]; then
+          echo "docker_image_name=assiya24/springboot-mysql-docker-dev:latest" >> $GITHUB_ENV
+        elif [[ "$GITHUB_REF" == "refs/heads/uat" ]]; then
+          echo "docker_image_name=assiya24/springboot-mysql-docker-uat:latest" >> $GITHUB_ENV
+        elif [[ "$GITHUB_REF" == "refs/heads/prod" ]]; then
+          echo "docker_image_name=assiya24/springboot-mysql-docker-prod:latest" >> $GITHUB_ENV
+        else
+          echo "docker_image_name=assiya24/springboot-mysql-docker:latest" >> $GITHUB_ENV
+        fi
+
+    - name: Pull Docker image and run container
+      if: steps.determine_docker_image.outputs.docker_image_name != 'assiya24/springboot-mysql-docker:latest'
+      run: |
+        docker pull ${{ steps.determine_docker_image.outputs.docker_image_name }}
+        docker run -d -p 8080:8080 --name my-spring-app ${{ steps.determine_docker_image.outputs.docker_image_name }}
+
+    - name: Pause for 10 seconds to allow application startup
+      pause:
+        seconds: 10
+
+    - name: Verify Spring Boot app availability
+      uri:
+        url: http://localhost:8080
+      register: response
+      ignore_errors: true
+
+    - name: Debug output for Spring Boot app
+      debug:
+        var: response
+
+    - name: Output Spring Boot app response
+      debug:
+        var: response.content

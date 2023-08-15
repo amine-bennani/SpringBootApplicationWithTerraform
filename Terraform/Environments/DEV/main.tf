@@ -84,7 +84,10 @@ module "rds" {
 #                       ROUTE TABLES                                #
 #####################################################################
 
-
-
+module "network_route-table" {
+  source  = "tedilabs/network/aws//modules/route-table"
+  version = "0.27.0"
+  #still working on them
+}
 
 

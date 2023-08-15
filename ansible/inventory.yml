@@ -1,0 +1,30 @@
+bastion:
+  hosts:
+    bastion_host:
+      ansible_host: <BASTION_HOST_IP_OR_DOMAIN>
+      ansible_user: ec2-user
+      ansible_ssh_private_key_file: /path/to/your/bastion/key.pem
+
+dev:
+  children:
+    bastion:
+      hosts:
+        dev_host:
+          ansible_host: <DEV_INSTANCE_IP_OR_DOMAIN>
+          ansible_user: ec2-user
+
+test:
+  children:
+    bastion:
+      hosts:
+        uat_host:
+          ansible_host: <TEST_INSTANCE_IP_OR_DOMAIN>
+          ansible_user: ec2-user
+
+prod:
+  children:
+    bastion:
+      hosts:
+        prod_host:
+          ansible_host: <PROD_INSTANCE_IP_OR_DOMAIN>
+          ansible_user: ec2-user
