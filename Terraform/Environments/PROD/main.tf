@@ -6,7 +6,7 @@ module "subnets" {
   source               = "../../modules/subnets"
   vpc_id               = module.vpc.vpc_id
   availability_zones   = var.availability_zone  # Different AZ from dev and UAT environments
-  public_subnet_cidrs  = ["10.0.3.0/24"]  # Example CIDR, adjust as needed
+  public_subnet_cidrs  = ["10.0.3.0/48"]  # Example CIDR, adjust as needed
   private_subnet_cidrs = ["10.0.13.0/24"]  # Example CIDR, adjust as needed
 }
 
